@@ -1,0 +1,16 @@
+{
+  "name": "cypress_javascript",
+  "version": "1.0.0",
+  "description": "Cypress Javascript",
+  "main": "index.js",
+  "scripts": {
+    "cypress": "cypress open",
+    "test": "cypress run"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@applitools/eyes-cypress": "^3.21.0",
+    "cypress": "^3.8.3"
+  }
+}
