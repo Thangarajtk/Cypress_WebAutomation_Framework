@@ -1,16 +1,17 @@
 {
   "name": "cypress_javascript",
   "version": "1.0.0",
-  "description": "Cypress Javascript",
+  "description": "Cypress Web Automation",
   "main": "index.js",
   "scripts": {
     "cypress": "cypress open",
-    "test": "cypress run"
+    "test": "cypress run --headed",
+    "test:chrome": "cypress run --browser chrome"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@applitools/eyes-cypress": "^3.21.0",
-    "cypress": "^3.8.3"
+  "devDependencies": {
+    "@applitools/eyes-cypress": "^3.21.1",
+    "cypress": "^7.3.0"
   }
 }

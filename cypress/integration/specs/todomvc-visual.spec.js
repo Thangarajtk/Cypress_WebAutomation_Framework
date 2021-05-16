@@ -1,6 +1,6 @@
 /// <reference types="Cypress" />
 
-import * as todoPage from '../pageobjects/todo-page'
+import * as todoPage from '../../pageobjects/todo-page'
 
 describe('Visual validation', () => {
     before(() => {

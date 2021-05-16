@@ -2,12 +2,11 @@
 
 import { navigate, addTodo, 
     validateTodoText, toggleTodo, 
-    clearCompleted, validateNumberOfTodosShown } from "../pageobjects/todo-page";
+    clearCompleted, validateNumberOfTodosShown } from "../../pageobjects/todo-page"
 
 describe('TODO Actions', () => {
     beforeEach(() => {
        navigate()
-
        addTodo('Clean room')
     });
     
