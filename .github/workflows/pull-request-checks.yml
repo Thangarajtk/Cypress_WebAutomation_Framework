@@ -1,0 +1,61 @@
+name: Pull Request - Automated Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  pr-checks:
+    runs-on: ubuntu-latest
+    name: PR Validation & Tests
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Generate reports
+        if: always()
+        run: |
+          npm run report:merge || true
+          npm run report:generate || true
+
+      - name: Add PR comment with test results
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const resultsPath = 'cypress/results/mochawesome-final-report.json';
+            
+            let comment = '## 🧪 E2E Test Results\n\n';
+            
+            if (fs.existsSync(resultsPath)) {
+              const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+              const stats = results.stats || results;
+              
+              comment += `| Metric | Value |\n`;
+              comment += `|--------|-------|\n`;
+              comment += `| Tests | ${stats.tests || 0} |\n`;
+              comment += `| Passed | ✓ ${stats.passes || 0} |\n`;
+              comment += `| Failed | ✗ ${stats.failures || 0} |\n`;
+              comment += `| Duration | ${(stats.duration / 1000).toFixed(2)}s |\n`;
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

@@ -1,15 +1,24 @@
-/// <reference types="Cypress" />
-
-import * as todoPage from '../../pageobjects/todo-page'
+const todoPage = require('../pageobjects/todo-page')
 
 describe('TODOs Filtering', () => {
+    let testData
+
+    before(() => {
+        cy.fixture('todos.json').then((data) => {
+            testData = data
+        })
+    })
+
     beforeEach(() => {
         todoPage.navigate()
 
-        todoPage.addTodo('Learn Web App Automation')
-        todoPage.addTodo('Learn Cypress')
-        todoPage.addTodo('Learn Javascript')
+        // Add todos from fixture
+        const todosToAdd = testData.todos.slice(0, 3)
+        todosToAdd.forEach((todo) => {
+            todoPage.addTodo(todo.text)
+        })
 
+        // Mark second todo as completed
         cy.get('.todo-list li:nth-child(2) .toggle').click()
     });
 

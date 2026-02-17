@@ -1,20 +1,45 @@
 {
   "name": "cypress_javascript",
-  "version": "1.0.0",
-  "description": "Cypress Web Automation",
+  "version": "2.0.0",
+  "description": "Cypress Web Automation Framework - Refactored with Modern Best Practices",
   "main": "index.js",
   "scripts": {
-    "cypress": "cypress open",
-    "test": "cypress run --headed",
-    "test:chrome": "cypress run --browser chrome"
+    "cypress:open": "cypress open",
+    "test": "cypress run",
+    "test:headed": "cypress run --headed",
+    "test:chrome": "cypress run --browser chrome",
+    "test:firefox": "cypress run --browser firefox",
+    "test:edge": "cypress run --browser edge",
+    "test:debug": "cypress run --debug",
+    "test:ci": "cypress run --record false --headless",
+    "test:smoke": "cypress run --spec 'cypress/e2e/**/*.spec.js' --browser chrome",
+    "test:sanity": "cypress run --spec 'cypress/e2e/todomvc-actions.spec.js'",
+    "report:merge": "mochawesome-merge cypress/results/mochawesome-*.json -o cypress/results/mochawesome-final-report.json",
+    "report:generate": "marge cypress/results/mochawesome-final-report.json -o cypress/results/html-report",
+    "report:clean": "rm -rf cypress/results",
+    "lint": "eslint cypress/**/*.js",
+    "lint:fix": "eslint cypress/**/*.js --fix",
+    "format": "prettier --write 'cypress/**/*.{js,json}'",
+    "format:check": "prettier --check 'cypress/**/*.{js,json}'",
+    "qa:all": "npm run lint && npm run format:check && npm run test:ci"
   },
-  "author": "",
+  "keywords": [
+    "cypress",
+    "e2e",
+    "testing",
+    "automation",
+    "web-automation"
+  ],
+  "author": "Thangaraj",
   "license": "ISC",
   "devDependencies": {
-    "@applitools/eyes-cypress": "^3.26.0",
-    "cypress": "^9.7.0",
-    "mochawesome": "^7.1.3",
-    "mochawesome-merge": "^4.2.1",
-    "mochawesome-report-generator": "^6.2.0"
+    "@applitools/eyes-cypress": "^3.58.3",
+    "cypress": "^13.6.2",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.1",
+    "mochawesome-report-generator": "^6.3.2",
+    "eslint": "^8.56.0",
+    "eslint-plugin-cypress": "^2.15.1",
+    "prettier": "^3.1.1"
   }
 }

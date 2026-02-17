@@ -1,0 +1,54 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "text": "Learn Web App Automation",
+      "completed": false,
+      "priority": "high",
+      "category": "learning"
+    },
+    {
+      "id": 2,
+      "text": "Learn Cypress",
+      "completed": false,
+      "priority": "high",
+      "category": "learning"
+    },
+    {
+      "id": 3,
+      "text": "Learn Javascript",
+      "completed": false,
+      "priority": "high",
+      "category": "learning"
+    },
+    {
+      "id": 4,
+      "text": "Clean Room",
+      "completed": false,
+      "priority": "medium",
+      "category": "household"
+    },
+    {
+      "id": 5,
+      "text": "Review Test Report",
+      "completed": true,
+      "priority": "medium",
+      "category": "work"
+    }
+  ],
+  "filters": {
+    "active": "Display only incomplete todos",
+    "completed": "Display only completed todos",
+    "all": "Display all todos"
+  },
+  "testData": {
+    "singleTodo": "Learn Automation Testing",
+    "multipleTodos": [
+      "Test Planning",
+      "Test Execution",
+      "Test Analysis"
+    ],
+    "specialCharacters": "Test @#$%^&*()",
+    "longText": "This is a long text that tests the input field boundary for adding a very long todo item to ensure proper handling of edge cases"
+  }
+}

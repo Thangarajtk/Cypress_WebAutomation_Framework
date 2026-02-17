@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "testuser",
+      "email": "testuser@example.com",
+      "role": "user"
+    },
+    {
+      "id": 2,
+      "username": "adminuser",
+      "email": "admin@example.com",
+      "role": "admin"
+    }
+  ],
+  "testScenarios": {
+    "basicFlow": {
+      "description": "Basic todo CRUD operations",
+      "steps": [
+        "Add single todo",
+        "Mark todo as complete",
+        "Clear completed todos"
+      ]
+    },
+    "filteringFlow": {
+      "description": "Test filtering functionality",
+      "steps": [
+        "Add multiple todos",
+        "Filter active items",
+        "Filter completed items",
+        "View all items"
+      ]
+    },
+    "edgeCase": {
+      "description": "Test edge cases",
+      "steps": [
+        "Add item with special characters",
+        "Add item with maximum length",
+        "Clear all items"
+      ]
+    }
+  },
+  "expectations": {
+    "todoAddition": "Todo should appear in the list",
+    "todoCompletion": "Todo text should have strikethrough",
+    "todoClear": "Todo should be removed from list",
+    "filtering": "Only matching todos should be displayed"
+  }
+}

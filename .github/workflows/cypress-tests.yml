@@ -1,0 +1,130 @@
+name: Cypress E2E Tests - CI/CD Pipeline
+
+# Trigger on push and pull request
+on:
+  push:
+    branches: [main, develop, staging]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run tests daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chrome, firefox, edge]
+        node-version: [18.x]
+    
+    name: E2E Tests - ${{ matrix.browser }} on Node ${{ matrix.node-version }}
+    
+    steps:
+      # Step 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 4: Run Cypress tests
+      - name: Run Cypress E2E tests - ${{ matrix.browser }}
+        run: npm run test -- --browser ${{ matrix.browser }}
+        env:
+          CI: true
+
+      # Step 5: Generate Mochawesome report
+      - name: Merge and generate HTML reports
+        if: always()
+        run: |
+          npm run report:merge || true
+          npm run report:generate || true
+
+      # Step 6: Upload test results as artifact
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-results-${{ matrix.browser }}
+          path: cypress/results/
+          retention-days: 30
+
+      # Step 7: Upload HTML report
+      - name: Upload HTML report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-report-${{ matrix.browser }}
+          path: cypress/results/html-report/
+          retention-days: 30
+
+      # Step 8: Upload screenshots on failure
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots-${{ matrix.browser }}
+          path: cypress/screenshots/
+          retention-days: 7
+
+      # Step 9: Post test summary
+      - name: Post test summary
+        if: always()
+        run: |
+          if [ -f cypress/results/mochawesome-final-report.json ]; then
+            echo "✓ Test results generated successfully"
+          fi
+
+  # Job 2: Security scanning
+  security:
+    runs-on: ubuntu-latest
+    name: Security & Code Quality
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+  # Job 3: Test summary notification
+  notify:
+    needs: [test]
+    runs-on: ubuntu-latest
+    name: Test Notification
+    if: always()
+    
+    steps:
+      - name: Determine test status
+        id: status
+        run: |
+          if [ "${{ needs.test.result }}" == "success" ]; then
+            echo "status=✓ All tests passed" >> $GITHUB_OUTPUT
+            echo "color=28a745" >> $GITHUB_OUTPUT
+          else
+            echo "status=✗ Some tests failed" >> $GITHUB_OUTPUT
+            echo "color=cb2431" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Print test status
+        run: echo "${{ steps.status.outputs.status }}"
