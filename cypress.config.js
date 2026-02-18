@@ -34,9 +34,24 @@ module.exports = defineConfig({
     
     // Setup plugins
     setupNodeEvents(on, config) {
-      // Implement node event listeners here
+      // Applitools Eyes for AI-powered visual testing
       require('@applitools/eyes-cypress')(module)
+      
+      // Image snapshot plugin for pixel-perfect comparison
+      require('cypress-image-snapshot/plugin').addMatchImageSnapshotPlugin(on, config);
+      
       return config
     }
+  },
+  
+  // Environment variables for visual testing
+  env: {
+    // Applitools Eyes configuration
+    applitoolsIsDisabled: true, // Set to false if you have APPLITOOLS_API_KEY
+    
+    // Image snapshot configuration
+    imageSnapshotMaxDiffThreshold: 0.5, // Allow 0.5% difference
+    imageSnapshotResizeDevicePixelRatio: true,
+    imageSnapshotDisableTimersAndAnimations: true
   }
 });

@@ -16,8 +16,11 @@
 // Import custom commands
 require('./commands')
 
-// Applitools Eyes support for visual testing (requires API key - optional)
-// Uncomment the line below to enable visual testing
+// Image snapshot plugin for pixel-perfect visual testing
+require('cypress-image-snapshot/command');
+
+// Applitools Eyes support for visual AI testing (optional)
+// Uncomment the line below and set APPLITOOLS_API_KEY env variable to enable
 // require('@applitools/eyes-cypress/commands');
 
 // Disable uncaught exceptions to prevent tests from stopping

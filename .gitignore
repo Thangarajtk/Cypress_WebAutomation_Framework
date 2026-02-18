@@ -18,6 +18,7 @@ cypress/screenshots/
 cypress/videos/
 cypress/results/
 cypress/downloads/
+cypress/snapshots/
 .cypress/
 cypress.env.json
 

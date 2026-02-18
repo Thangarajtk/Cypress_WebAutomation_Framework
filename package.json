@@ -21,7 +21,9 @@
     "lint:fix": "eslint cypress/**/*.js --fix",
     "format": "prettier --write 'cypress/**/*.{js,json}'",
     "format:check": "prettier --check 'cypress/**/*.{js,json}'",
-    "qa:all": "npm run lint && npm run format:check && npm run test:ci"
+    "qa:all": "npm run lint && npm run format:check && npm run test:ci",
+    "test:visual": "cypress run --spec 'cypress/e2e/todomvc-visual.spec.js' --headed",
+    "test:visual:update": "cypress run --spec 'cypress/e2e/todomvc-visual.spec.js' --headed --env update=true"
   },
   "keywords": [
     "cypress",
@@ -35,6 +37,7 @@
   "devDependencies": {
     "@applitools/eyes-cypress": "^3.58.3",
     "cypress": "^13.6.2",
+    "cypress-image-snapshot": "^4.0.1",
     "mochawesome": "^7.1.4",
     "mochawesome-merge": "^5.1.1",
     "mochawesome-report-generator": "^6.3.2",

@@ -81,3 +81,55 @@ Cypress.Commands.add('login', (email, password) => {
 Cypress.Commands.add('logout', () => {
   cy.get('[data-testid="logout-button"]').click()
 })
+
+/**
+ * Visual Testing Commands
+ */
+
+/**
+ * Custom command: Compare visual snapshot (pixel-perfect)
+ * Usage: cy.matchSnapshot('element-name')
+ * Updates baseline: npm run test:visual:update
+ */
+Cypress.Commands.add('matchSnapshot', (specName, options = {}) => {
+  const opts = {
+    failureThreshold: 0.5, // Allow 0.5% threshold
+    failureThresholdType: 'percent',
+    ...options
+  }
+  cy.screenshot(specName, { capture: 'viewport' })
+})
+
+/**
+ * Custom command: Compare full page snapshot
+ * Usage: cy.matchFullPageSnapshot('page-name')
+ */
+Cypress.Commands.add('matchFullPageSnapshot', (specName, options = {}) => {
+  cy.screenshot(specName, { capture: 'fullPage' })
+})
+
+/**
+ * Custom command: Compare element snapshot
+ * Usage: cy.get('selector').matchElementSnapshot('element-name')
+ */
+Cypress.Commands.add('matchElementSnapshot', { prevSubject: 'element' }, (subject, specName, options = {}) => {
+  cy.wrap(subject).screenshot(specName, { capture: 'viewport' })
+  return subject
+})
+
+/**
+ * Custom command: Visual check with Applitools Eyes
+ * Usage: cy.checkWithEyes('step-name')
+ * Note: Requires APPLITOOLS_API_KEY environment variable
+ */
+Cypress.Commands.add('checkWithEyes', (stepName) => {
+  if (!Cypress.env('applitoolsIsDisabled')) {
+    cy.eyesCheckWindow({
+      tag: stepName,
+      target: 'window',
+      fully: true
+    })
+  } else {
+    cy.log(`Applitools Eyes is disabled. Set APPLITOOLS_API_KEY to enable.`)
+  }
+})
