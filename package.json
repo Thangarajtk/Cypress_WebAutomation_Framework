@@ -17,13 +17,13 @@
     "report:merge": "mochawesome-merge cypress/results/mochawesome-*.json -o cypress/results/mochawesome-final-report.json",
     "report:generate": "marge cypress/results/mochawesome-final-report.json -o cypress/results/html-report",
     "report:clean": "rm -rf cypress/results",
-    "lint": "eslint cypress/**/*.js",
-    "lint:fix": "eslint cypress/**/*.js --fix",
     "format": "prettier --write 'cypress/**/*.{js,json}'",
     "format:check": "prettier --check 'cypress/**/*.{js,json}'",
     "qa:all": "npm run lint && npm run format:check && npm run test:ci",
     "test:visual": "cypress run --spec 'cypress/e2e/todomvc-visual.spec.js' --headed",
-    "test:visual:update": "cypress run --spec 'cypress/e2e/todomvc-visual.spec.js' --headed --env update=true"
+    "test:visual:update": "cypress run --spec 'cypress/e2e/todomvc-visual.spec.js' --headed --env update=true",
+    "lint": "eslint cypress/e2e cypress/pageobjects cypress/support",
+    "lint:fix": "eslint cypress/e2e cypress/pageobjects cypress/support --fix"
   },
   "keywords": [
     "cypress",

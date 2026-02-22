@@ -16,11 +16,7 @@
   "testScenarios": {
     "basicFlow": {
       "description": "Basic todo CRUD operations",
-      "steps": [
-        "Add single todo",
-        "Mark todo as complete",
-        "Clear completed todos"
-      ]
+      "steps": ["Add single todo", "Mark todo as complete", "Clear completed todos"]
     },
     "filteringFlow": {
       "description": "Test filtering functionality",

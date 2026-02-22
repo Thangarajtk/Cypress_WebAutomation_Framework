@@ -8,7 +8,7 @@
 
 Cypress is a next generation front end testing tool built for the modern web. This is an **enterprise-grade implementation** with CI/CD integration, test data management, and code quality standards.
 
-## ✨ Enterprise Features
+## ✨ Features
 
 ✅ **Cypress Fixtures** - Centralized test data management  
 ✅ **GitHub Actions CI/CD** - Automated multi-browser testing pipeline  
@@ -75,7 +75,7 @@ cypress/
 │   ├── commands.js           # Custom Cypress commands
 │   └── utils.js              # Utility functions
 ├── results/                   # Test reports (generated)
-├── screenshots/               # Visual test outputs (generated)
+├── screenshots/               # Visual test baselines & outputs (auto-generated)
 └── config/                    # Configuration files
 
 .github/workflows/             # GitHub Actions
@@ -214,7 +214,37 @@ npm run test:smoke
 
 # Sanity check (single spec)
 npm run test:sanity
+
+# Visual tests (generate/compare snapshots)
+npm run test:visual
+
+# Update baseline snapshots (after intentional UI changes)
+npm run test:visual:update
 ```
+
+## 📸 Visual Testing & Snapshots
+
+### How Baseline Images Work
+
+- **Automatic Generation**: Baseline images are created automatically on first run
+- **Storage Location**: Baselines stored in `cypress/screenshots/<spec-name>/`
+- **Baseline Capture**: `cy.screenshot('name')` captures the baseline image
+- **Comparison**: Subsequent runs compare against baseline to detect visual changes
+
+### Managing Baseline Images
+
+```bash
+# Generate initial baselines (first run creates all screenshots)
+npm run test:visual
+
+# Run all tests including visual
+npm test
+
+# View baseline images
+open cypress/screenshots/
+```
+
+For detailed visual testing guide, see [VISUAL_TESTING_GUIDE.md](VISUAL_TESTING_GUIDE.md)
 
 ## 🤖 CI/CD Pipeline
 
@@ -410,16 +440,16 @@ Tests run automatically:
 
 ## 📝 Best Practices
 
-✅ Use fixtures for test data
-✅ Leverage custom commands
-✅ Follow Page Object Model
-✅ Keep tests independent
-✅ Use data-testid attributes
-✅ Log test steps
-✅ Take screenshots strategically
-✅ Review test reports regularly
-✅ Monitor CI/CD pipeline
-✅ Update dependencies regularly
+  - ✅ Use fixtures for test data
+  - ✅ Leverage custom commands
+  - ✅ Follow Page Object Model
+  - ✅ Keep tests independent
+  - ✅ Use data-testid attributes
+  - ✅ Log test steps
+  - ✅ Take screenshots strategically
+  - ✅ Review test reports regularly
+  - ✅ Monitor CI/CD pipeline
+  - ✅ Update dependencies regularly
 
 ## 🔒 Security
 
@@ -472,6 +502,19 @@ lsof -i :8080
 kill -9 <PID>
 ```
 
+### Visual Tests Failing - Baseline Comparison Issues
+
+If visual tests fail due to screenshot mismatch:
+
+```bash
+# Review the screenshots in cypress/screenshots/
+# If UI changes are intentional, baseline images are automatically updated
+# If changes are unintentional, check CSS/styling issues
+
+# Run visual tests to capture updated baselines
+npm run test:visual
+```
+
 ## 📚 Resources
 
 - [Cypress Documentation](https://docs.cypress.io/)
@@ -481,10 +524,6 @@ kill -9 <PID>
 - [Mochawesome Reporter](https://github.com/adamgruber/mochawesome)
 - [ESLint Rules](https://eslint.org/docs/rules/)
 - [Prettier Options](https://prettier.io/docs/en/options.html)
-
-## 📄 License
-
-ISC
 
 ## 👥 Contributing
 
@@ -497,6 +536,7 @@ ISC
 ---
 
 **Framework Version**: 2.0.0
+
 **Last Updated**: February 2026  
 **Author**: Thangaraj
 

@@ -14,7 +14,7 @@
 // =====================================================
 
 // Import custom commands
-require('./commands')
+require('./commands');
 
 // Image snapshot plugin for pixel-perfect visual testing
 require('cypress-image-snapshot/command');
@@ -24,24 +24,21 @@ require('cypress-image-snapshot/command');
 // require('@applitools/eyes-cypress/commands');
 
 // Disable uncaught exceptions to prevent tests from stopping
-Cypress.on('uncaught:exception', (err, runnable) => {
+Cypress.on('uncaught:exception', () => {
   // Return false to prevent Cypress from failing the test
-  return false
-})
+  return false;
+});
 
 // Hook: Log before each test
 beforeEach(() => {
-  cy.log(`Starting test: ${Cypress.currentTest.title}`)
-})
+  cy.log(`Starting test: ${Cypress.currentTest.title}`);
+});
 
 // Hook: Log after each test
 afterEach(function () {
   if (this.currentTest.state === 'passed') {
-    cy.log(`✓ Test passed: ${this.currentTest.title}`)
+    cy.log(`✓ Test passed: ${this.currentTest.title}`);
   } else if (this.currentTest.state === 'failed') {
-    cy.log(`✗ Test failed: ${this.currentTest.title}`)
+    cy.log(`✗ Test failed: ${this.currentTest.title}`);
   }
-})
-
-
-
+});

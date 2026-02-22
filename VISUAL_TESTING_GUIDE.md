@@ -6,13 +6,14 @@ This guide explains the visual testing capabilities integrated into the Cypress 
 
 The framework includes **two complementary visual testing tools**:
 
-### 1. **cypress-image-snapshot** (Pixel-Perfect Comparison)
+### 1. **Cypress Screenshots** (Baseline Image Comparison)
 - **Purpose**: Pixel-level visual regression testing
 - **Best for**: Detecting UI layout changes, color changes, styling issues
-- **Storage**: Local baseline images stored in `cypress/snapshots/`
+- **Storage**: Baseline images stored in `cypress/screenshots/`
+- **Method**: `cy.screenshot()` command captures baseline on first run
 - **Cost**: Free, self-hosted
 
-### 2. **Applitools Eyes** (AI-Powered Visual Testing)
+### 2. **Applitools Eyes** (AI-Powered Visual Testing - Optional)
 - **Purpose**: Intelligent visual validation with AI
 - **Best for**: Cross-browser testing, responsive design validation, ignoring dynamic content
 - **Storage**: Cloud-based (requires Applitools account)
@@ -37,9 +38,9 @@ npx cypress run --spec "cypress/e2e/todomvc-visual.spec.js"
 
 ### Generated Artifacts
 
-- **Snapshots**: `cypress/snapshots/` - Baseline images (created on first run with `--env update=true`)
-- **Screenshots**: `cypress/screenshots/` - Captured during test execution
-- **Diff Reports**: Automatically generated on mismatch
+- **Screenshots**: `cypress/screenshots/` - Baseline images (created on first run)
+- **Reports**: Automatically generated on each run
+- **Test Results**: Timestamped in `cypress/results/`
 
 ---
 
@@ -92,12 +93,17 @@ To enable Applitools Eyes:
 cypress/
 ├── e2e/
 │   └── todomvc-visual.spec.js          # Visual test suite
-├── snapshots/                          # Created after first test run
-│   └── todomvc-visual.spec.js/         # Baseline images (auto-generated)
-│       ├── empty-todo-list-1.png       # Auto-created on first run
-│       ├── with-todos-added-1.png
+├── screenshots/                        # Baseline and test screenshots
+│   └── todomvc-visual.spec.js/         # Baseline images (auto-generated on first run)
+│       ├── empty-todo-list.png         # Auto-created after first test
+│       ├── with-todos-added.png
+│       ├── full-page-with-todos.png
 │       └── ...
-├── screenshots/
+├── results/                            # Test reports
+│   └── mochawesome-report-[timestamp].json
+└── support/                            # Test utilities
+    ├── commands.js
+    └── e2e.js
 │   └── todomvc-visual.spec.js/         # Test run screenshots
 │       └── ...
 └── support/
